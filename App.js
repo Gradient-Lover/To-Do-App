@@ -108,7 +108,7 @@ const ToDoItem = ({
         <Text style={[styles.itemText, { width: "70%" }]}>{item.text}</Text>
         <View
           style={{
-            display: "flex",
+            display: `${infoVisible ? "flex" : "none"}`,
             flexDirection: "row",
             width: "30%",
             justifyContent: "center",
@@ -146,9 +146,14 @@ export default function App() {
   const [colorPickerId, setColorPickerId] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
   const [infoVisible, setInfoVisible] = useState({});
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleChange = (text) => {
     setText(text);
+  };
+
+  const updateVisible = () => {
+    setIsVisible(!isVisible);
   };
 
   const handleAdd = () => {
@@ -261,11 +266,11 @@ export default function App() {
           flexDirection: "row",
         }}
       >
-        <Text style={[styles.title, { float: "left", width: "80%" }]}>
+        <Text style={[styles.title, { width: "80%" }]}>
           React Native To-Do List
         </Text>
         {/* Add the info button */}
-        <TouchableOpacity onPress={() => toggleInfo(item.id)}>
+        <TouchableOpacity onPress={updateVisible}>
           <View style={styles.infoButton}>
             <Text style={styles.infoButtonText}>?</Text>
           </View>
