@@ -5,7 +5,7 @@ import {
   View,
   TextInput,
   Button,
-  Flatlist,
+  FlatList,
   Alert,
   TouchableWithoutFeedback,
   TouchableOpacity,
