@@ -6,9 +6,9 @@ import {
   TextInput,
   Button,
   FlatList,
-  Alert,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 
 // Function to generate a ✨random✨ly colored task whenever a change is made
