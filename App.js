@@ -7,9 +7,10 @@ import {
   Button,
   FlatList,
   Alert,
-  TouchableWithoutFeedback,
   TouchableOpacity,
 } from "react-native";
+import ToDoItem from "./components/ToDoItem";
+import ColorPicker from "./components/ColorPicker";
 
 // Function to generate a ✨random✨ly colored task whenever a change is made
 const randomColor = () => {
@@ -20,133 +21,13 @@ const randomColor = () => {
   return color;
 };
 
-const ColorPicker = ({ item, setItemColor, setAllColors }) => {
-  // An array of colours for the circles 💖🧡💛💚💙💜💗
-  const colors = [
-    "red",
-    "orange",
-    "yellow",
-    "green",
-    "blue",
-    "indigo",
-    "violet",
-    "<View></View>",
-    "lightsalmon",
-    "palegoldenrod",
-    "lightyellow",
-    "lightgreen",
-    "lightblue",
-    "lavender",
-    "lightpink",
-  ];
-
-  const [selectedColor, setSelectedColor] = useState(null);
-
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
-  };
-
-  const handleSet = () => {
-    if (selectedColor) {
-      setItemColor(item.id, selectedColor);
-      setSelectedColor(null);
-    }
-  };
-
-  const handleSetAll = () => {
-    if (selectedColor) {
-      setAllColors(selectedColor);
-      setSelectedColor(null);
-    }
-  };
-
-  return (
-    <View style={styles.colorPicker}>
-      <View style={styles.colorCircles}>
-        {colors.map((color) => (
-          <TouchableWithoutFeedback
-            key={color}
-            onPress={() => handleColorSelect(color)}
-          >
-            <View style={[styles.colorCircle, { backgroundColor: color }]}>
-              {selectedColor === color && (
-                <Text style={styles.tickMark}>✓</Text>
-              )}
-            </View>
-          </TouchableWithoutFeedback>
-        ))}
-      </View>
-      <View style={styles.colorButtons}>
-        <Button title="Set for All" onPress={handleSetAll} />
-        <Button title="Set" onPress={handleSet} />
-      </View>
-    </View>
-  );
-};
-
-const ToDoItem = ({
-  item,
-  deleteItem,
-  showColorPicker,
-  onSelect,
-  isSelected,
-  toggleInfo,
-  infoVisible,
-}) => {
-  const handlePress = () => {
-    onSelect(item.id);
-  };
-
-  return (
-    <TouchableWithoutFeedback onPress={handlePress}>
-      <View
-        style={[
-          styles.item,
-          { backgroundColor: isSelected ? "lightgray" : item.color },
-        ]}
-      >
-        <Text style={[styles.itemText, { width: "70%" }]}>{item.text}</Text>
-        <View
-          style={{
-            display: `${infoVisible ? "flex" : "none"}`,
-            flexDirection: "row",
-            width: "30%",
-            justifyContent: "center",
-          }}
-        >
-          <Button
-            title="🎨"
-            color="black"
-            onPress={() => showColorPicker(item.id)}
-            style={{ width: "50%" }}
-          />
-          <Button
-            title="❌"
-            color="white"
-            onPress={() => deleteItem(item.id)}
-            style={{ width: "50%" }}
-          />
-        </View>
-        {/* Display the info section */}
-        {infoVisible && (
-          <View style={styles.info}>
-            <Text style={styles.infoText}>
-              Task created at: {item.createdAt}
-            </Text>
-          </View>
-        )}
-      </View>
-    </TouchableWithoutFeedback>
-  );
-};
-
 export default function App() {
   const [text, setText] = useState("");
   const [items, setItems] = useState([]);
   const [colorPickerId, setColorPickerId] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [infoVisible, setInfoVisible] = useState({});
   const [isVisible, setIsVisible] = useState(false);
+  const [toggleInfoButton, setToggleInfoButton] = useState("button");
 
   const handleChange = (text) => {
     setText(text);
@@ -252,27 +133,25 @@ export default function App() {
     setSelectedItems([]);
   };
 
-  const toggleInfo = (itemId) => {
-    setInfoVisible((prevInfoVisible) => ({
-      ...prevInfoVisible,
-      [itemId]: !prevInfoVisible[itemId],
-    }));
-  };
-
   return (
     <View style={[styles.container, { backgroundColor: randomColor() }]}>
-      <View
-        style={{
-          flexDirection: "row",
-        }}
-      >
-        <Text style={[styles.title, { width: "80%" }]}>
+      <View>
+        <Text style={[styles.title, { width: "100%" }]}>
           React Native To-Do List
         </Text>
-        {/* Add the info button */}
-        <TouchableOpacity onPress={updateVisible}>
+
+        <TouchableOpacity
+          style={styles.infoButtonTouchableOpacity}
+          onPress={() => {
+            if (toggleInfoButton === "button") {
+              setToggleInfoButton("info");
+            } else {
+              setToggleInfoButton("button");
+            }
+          }}
+        >
           <View style={styles.infoButton}>
-            <Text style={styles.infoButtonText}>?</Text>
+            <Text style={styles.infoButtonText}>About tasks</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -294,8 +173,7 @@ export default function App() {
             showColorPicker={handleShowColorPicker}
             onSelect={handleSelect}
             isSelected={selectedItems.includes(item.id)}
-            toggleInfo={toggleInfo}
-            infoVisible={infoVisible[item.id] || false}
+            toggleInfoButton={toggleInfoButton}
           />
         )}
         keyExtractor={(item) => item.id}
@@ -400,12 +278,6 @@ const styles = StyleSheet.create({
   },
   infoButton: {
     position: "absolute",
-    top: 15,
-    right: -50,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#25b7d3",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -424,5 +296,9 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 16,
     marginBottom: 5,
+  },
+  infoButtonTouchableOpacity: {
+    backgroundColor: "black",
+    textAlign: "center",
   },
 });
