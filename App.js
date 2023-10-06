@@ -8,7 +8,6 @@ import {
   FlatList,
   Alert,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import ToDoItem from "./components/ToDoItem";
 import ColorPicker from "./components/ColorPicker";
