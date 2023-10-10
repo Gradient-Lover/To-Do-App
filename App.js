@@ -171,7 +171,7 @@ export default function App() {
             item={item}
             deleteItem={handleDelete}
             showColorPicker={handleShowColorPicker}
-            onSelect={handleSelect}
+            handleSelect={handleSelect}
             isSelected={selectedItems.includes(item.id)}
             toggleInfoButton={toggleInfoButton}
           />
@@ -280,6 +280,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "red",
   },
   infoButtonText: {
     color: "white",

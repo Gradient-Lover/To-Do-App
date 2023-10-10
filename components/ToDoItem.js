@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 
 import {
   StyleSheet,
@@ -15,13 +16,14 @@ export const ToDoItem = ({
   showColorPicker,
   isSelected,
   toggleInfoButton,
+  handleSelect,
 }) => {
-  const handlePress = () => {
-    onSelect(item.id);
-  };
-
   return (
-    <TouchableWithoutFeedback onLongPress={handlePress}>
+    <TouchableWithoutFeedback
+      onLongPress={() => {
+        handleSelect(item.id);
+      }}
+    >
       <View
         style={[
           styles.item,
